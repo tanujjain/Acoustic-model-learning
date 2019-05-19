@@ -1,0 +1,31 @@
+
+function [ind] = Cluster_Purity(SeqHMMLabel,SeqOrigLabel,NHmm,iternum)
+
+%     SeqOrigLabel = SeqOrigLabel+1;
+    Map = zeros(size(unique(SeqOrigLabel),1),NHmm);
+    
+    for i = 1:size(SeqHMMLabel,1)
+        Map(SeqOrigLabel(i),SeqHMMLabel(i)) = Map(SeqOrigLabel(i),SeqHMMLabel(i)) + 1;
+    end
+    
+    ClassPurity = max(Map,[],1)./sum(Map,1);
+    Overall_purity = sum(max(Map,[],1))/size(SeqOrigLabel,1);
+    
+    [~,ind] = max(Map,[],1);
+    
+%     MI = (Map/size(SeqOrigLabel,1)).*log2(size(SeqOrigLabel,1)*Map./repmat((sum(Map,1).*sum(Map,2)'),NHmm,1));
+%     MI = sum(MI(:));
+    folder = '/home/jain/Thesis/GMM_Known/Cluster_analysis_pruned';
+    cd(folder);
+    
+    dlmwrite(['cluster_it_' num2str(iternum)],ClassPurity);
+%     dlmwrite(['cluster_it_' num2str(iternum)],num2str(Overall_purity),'-append');
+    dlmwrite(['cluster_it_' num2str(iternum)],Overall_purity,'-append');
+%     dlmwrite(['cluster_it_' num2str(iternum)],num2str(Map),'-append');
+%     dlmwrite(['cluster_it_' num2str(iternum)],MI,'-append');
+    dlmwrite(['cluster_it_' num2str(iternum)],Map,'-append');
+    
+%     save(['cluster_it_' num2str(iternum)],'ClassPurity','Overall_purity','Map');
+    cd('../');
+    
+end
