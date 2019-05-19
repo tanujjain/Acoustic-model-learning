@@ -1,0 +1,30 @@
+clear;
+
+%% Add paths for all functions
+
+addpath([ pwd '/../../Database']);
+addpath([pwd '/../../Functions/Common_Functions']);
+addpath([pwd '/../../Functions/GMM']);
+addpath([pwd '/../BaumWelch']);
+addpath([pwd '/../../Functions/BW']);
+addpath([pwd '/../../Functions/GrowMix']);
+addpath([pwd '/../GMM_Known']);
+addpath([pwd '/Cluster_Purity']);
+
+%% Load Data
+
+load X_48phoneme.mat;
+load GlobMeanCov_48.mat; % Load global mean and covariance
+
+NHmm = 48;
+Pi = [1 0 0];
+Nstates = 3;
+Nmix_gmm = 1;
+
+% Flat start initialization of HMM attributes
+[Aest,mu,cov,~,~,Pi_Gmm,~] = flat_HMM_rand(X,NHmm,Nstates,Nmix_gmm);
+
+%% Sampler
+
+[Aest,mu,cov,Pi_Gmm,SeqHMMLabel,HMMRemoved] = Multi_HMM_Sampler_Pruned_N(X,Aest,mu,cov,NHmm,Pi,SeqOrigLabel,Pi_Gmm,globmu,globcov);
+
