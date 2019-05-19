@@ -1,0 +1,25 @@
+
+
+clear;
+
+%% Add paths for all functions
+
+addpath('/home/jain/Thesis/Acoustic_Model_Learning/Code/Database');
+addpath('/home/jain/Thesis/Acoustic_Model_Learning/Code/Functions/Common_Functions');
+addpath('/home/jain/Thesis/Acoustic_Model_Learning/Code/Functions/GMM');
+addpath('/home/jain/Thesis/Acoustic_Model_Learning/Code/Functions/GMM_Unknown');
+addpath('/home/jain/Thesis/Acoustic_Model_Learning/Code/Scripts/Unknown_number/Cluster_Purity');
+addpath('/home/jain/Thesis/Acoustic_Model_Learning/Code/Functions/GrowMix');
+% addpath('/home/jain/Thesis/Acoustic_Model_Learning/Code/Functions/Single_Gauss');
+%% Load Data
+% load X_min_seq_3_no_overlap.mat;
+load X_48phoneme.mat;
+load GlobMeanCov_48.mat;
+
+%% Attributes
+Nmix = 8;
+Nstates = 3;
+
+%% Call Sampler
+
+[AestOut,muOut,covOut,Pi_GmmOut,SeqPerHMMOut] = HMM_Sample_Unknown(X,Nmix,globmu,globcov,Nstates,SeqOrigLabel);

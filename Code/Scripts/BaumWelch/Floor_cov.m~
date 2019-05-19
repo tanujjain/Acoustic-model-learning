@@ -1,0 +1,13 @@
+
+function [cov] = Floor_cov(cov,Nmix,hmmnum)
+ObsDim = size(cov,1);
+for i = 1:ObsDim
+    for j = 1:Nmix
+        if(cov(i,j)<0.01)
+            cov(i,j) = 0.01;
+            disp('floored =');disp(hmmnum);            
+        end
+    end
+end
+
+end
